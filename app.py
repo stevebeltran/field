@@ -10,6 +10,49 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# ============================================
+# 🔐 AUTHENTICATION
+# ============================================
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    # Show login page
+    st.set_page_config(
+        page_title="Field Reports - Login",
+        page_icon="🔐",
+        layout="centered"
+    )
+
+    st.markdown("""
+    <div style='text-align: center; padding: 50px 0;'>
+        <h1>🔐 Field Reports System</h1>
+        <p style='color: gray;'>Illinois Conservation Police</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        password = st.text_input("Enter password:", type="password", key="login_password")
+
+        if st.button("🔓 Login", use_container_width=True, type="primary"):
+            # Get password from secrets, default to 'demo' if not set
+            correct_password = st.secrets.get("APP_PASSWORD", "demo")
+
+            if password == correct_password:
+                st.session_state.authenticated = True
+                st.success("✅ Login successful!")
+                st.rerun()
+            else:
+                st.error("❌ Invalid password. Please try again.")
+
+    st.info("💡 Default password: `demo` (Change in Streamlit Secrets)")
+    st.stop()
+
+# ============================================
+# END AUTHENTICATION
+# ============================================
+
 # Page configuration
 st.set_page_config(
     page_title="Field Reports System",
@@ -34,6 +77,18 @@ if "db_initialized" not in st.session_state:
 
 # Sidebar navigation
 st.sidebar.title("📋 Field Reports System")
+
+# Logout button
+st.sidebar.divider()
+col1, col2 = st.sidebar.columns([3, 1])
+with col1:
+    st.sidebar.write(f"**Logged in** ✅")
+with col2:
+    if st.sidebar.button("🚪 Logout", key="logout_btn"):
+        st.session_state.authenticated = False
+        st.rerun()
+
+st.sidebar.divider()
 
 if st.session_state.get("db_initialized", False):
     st.sidebar.info("✅ Database Connected")
