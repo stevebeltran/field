@@ -1,8 +1,8 @@
-streamlit==1.40.2
-pdfplumber==0.11.2
-PyMySQL==1.1.1
-SQLAlchemy==2.0.36
-python-dotenv==1.0.1
-pandas==2.2.3
-Pillow==11.0.0
-numpy==2.0.2
+streamlit==1.39.0
+pdfplumber==0.11.0
+PyMySQL==1.1.0
+SQLAlchemy==2.0.28
+python-dotenv==1.0.0
+pandas==2.1.4
+Pillow==10.1.0
+numpy==1.26.4
